@@ -28,8 +28,6 @@ public class Jdbc {
             int signinAdmministrator = 0;
             int signinUsers = 0;
             while (true) {
-
-
                 if (judge == 1) {
                     List<Administrator> administrators = new Operation().executeQuery1(sql1 , Administrator.class);
                    if (signinAdmministrator == 0) {
@@ -91,7 +89,7 @@ public class Jdbc {
                                 if (a.getName().equals(judgeName)){
                                     judgee = 0;}}
 
-                            if (judgee == 2){
+                            if (judgee == 2 || judgeName.length() > 16){
                                 System.out.println("Input error! Please input again.");
                             }
                         }
@@ -118,7 +116,7 @@ public class Jdbc {
                                 break;;
 
                             for(Administrator a : administrators){
-                                if (a.getName().equals(judgeName)) {
+                                if (a.getName().equals(judgeName) || judgeName.length() > 16) {
                                     judgee = 2;
                                     System.out.println("Input error! Please input again.");
                                     break;
@@ -159,7 +157,6 @@ public class Jdbc {
                         }
                         new Operation().deleteAdministrator(judgeName);
                     }
-
 
                     if (judge1 == 5)
                         new Operation().showUsers();
@@ -255,7 +252,7 @@ public class Jdbc {
                                 break;
 
                             for (int i = 0 ; i < users.size() ; i++) {
-                                if (users.get(i).getId().equals(judgeId)) {
+                                if (users.get(i).getId().equals(judgeId) || judgeId.length() > 9) {
                                     judgee = 2;
                                     System.out.println("Input error! Please input again.");
                                     break;
