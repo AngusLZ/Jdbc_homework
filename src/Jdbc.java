@@ -344,17 +344,20 @@ public class Jdbc {
                 if (judge == 2){
                     int judgee = 2;
                     List<User> users = new Operation().executeQuery1(sql2 , User.class);
+                    String userName = " ";
+                    String changeId = " ";
 
                     if (signinUsers == 0) {
                         System.out.println("Please input username.");
                         String userPassword = " ";
                         while (true) {
                             int yu = 0;
-                            String userName = scanner.next();
+                            userName = scanner.next();
                             for (User a : users) {
                                 if (a.getUsername().equals(userName)) {
                                     yu = 1;
                                     userPassword = a.getPassword();
+                                    changeId = a.getId();
                                 }
                             }
                             if (yu == 1)
@@ -375,36 +378,24 @@ public class Jdbc {
                         }
                     }
 
-
                     new Menu().userMenu1();
                     int judge2 = scanner.nextInt();
-                    while (judge2 != 1 && judge2 != 2 && judge2 != 3 && judge2 != 4 && judge2 != 5 && judge2 != 6) {
+                    while (judge2 != 1 && judge2 != 2 && judge2 != 3 && judge2 != 4) {
                         System.out.println("Input error! Please input again.");
                         judge2 = scanner.nextInt();
                     }
 
-                    if (judge2 == 1)
-                        new Operation().showUsers();
+                    if (judge2 == 1) {
+                        for(User a : users){
+                            if (a.getUsername().equals(userName)){
+                                System.out.println(new Operation().buqi("id") + "\t" + new Operation().buqi("Username") + "\t" + new Operation().buqi2("Password") + "\t" + new Operation().buqi("Name") + "\t" + new Operation().buqi("Gender") + "\t" + new Operation().buqi("Phone"));
+                                System.out.println(new Operation().buqi(a.getId()) + "\t" + new Operation().buqi(a.getUsername()) + "\t" + new Operation().buqi2(a.getPassword()) + "\t" + new Operation().buqi(a.getName()) + "\t" + new Operation().buqi(a.getGender()) + "\t" + new Operation().buqi(a.getPhone()));
+                            }
+                        }
+                    }
 
                     if (judge2 == 2) {
-                        if (users.isEmpty()){
-                            System.out.println("No information!");
-                            break;
-                        }
 
-                        System.out.println("Please input id.");
-                        String judgeId = " ";
-                        while (judgee == 2) {
-                            judgeId = scanner.next();
-
-                            for (User a : users) {
-                                if (a.getId().equals(judgeId))
-                                    judgee = 0;
-                            }
-                            if (judgee == 2) {
-                                System.out.println("Input error! Please input again.");
-                            }
-                        }
                         System.out.println("Please input id.");
                         String id = " ";
                         judgee = 2;
@@ -412,7 +403,7 @@ public class Jdbc {
                             judgee = 0;
                             id = scanner.next();
                             for (User a : users){
-                                if (a.getId().equals(id)) {
+                                if (a.getId().equals(id) || id.length() > 9) {
                                     judgee = 2;
                                     System.out.println("Input error! Please input again.");
                                     break;
@@ -421,20 +412,21 @@ public class Jdbc {
                             if (judgee == 0)
                                 break;
                         }
-
-                        String userName = " ";
+                        userName = " ";
                         int judge3 = 1;
                         judgee = 2;
                         System.out.println("Please input username.");
                         while (judgee == 2){
+
                             judgee = 0;
+
                             userName = scanner.next();
 
                             for (User a : users)
                                 if (a.getUsername().equals(userName)){
                                     judgee = 2;}
 
-                            if (judgee == 0)
+                            if (judgee == 2)
                                 System.out.println("Input error! Please input again.");
                         }
 
@@ -455,13 +447,15 @@ public class Jdbc {
                         }
 
                         User user = new User();
-                        user.setId(judgeId);
+                        user.setId(id);
                         user.setUsername(userName);
                         user.setPassword(password);
                         user.setName(name);
                         user.setGender(gender);
                         user.setPhone(phone);
-                        new Operation().changeUsers(judgeId , user);
+
+                        new Operation().changeUsers(changeId , user);
+
                     }
 
                     if (judge2 == 3)
